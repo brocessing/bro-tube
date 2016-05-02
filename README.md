@@ -1,2 +1,2 @@
 # bro-tube
-💪 for your Youtube videos
+💪 for your Youtube 🎬
