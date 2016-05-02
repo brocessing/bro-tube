@@ -1,6 +1,6 @@
 #!/bin/sh
 maxSize="1080"
-download_location="/Users/michelgangster/Documents/ERG 15:16/Projets/One thing leading to another"
+download_location="/Path/To/Your/Folder"
 
 extremeMode=$3
 deeperLevel=$2
@@ -9,7 +9,7 @@ currentLevel=1
 prefix="$(date +%s)"
 
 function getABroFrom {
-  echo "\033[0m\033[36m[OTLTA][""$currentLevel""/""$deeperLevel""] \033[32m>>> Search new related video from \033[32m$1\033[0m"
+  echo "\033[0m\033[36m[Get Thumbnail][""$currentLevel""/""$deeperLevel""] \033[32m>>> Search new related video from \033[32m$1\033[0m"
   local videos=""
   if [ "$extremeMode" -gt 0 ]; then
     videos=$(curl -s "$1"  | sed -n -e '/watch-related/,$p' | grep "thumb-wrapper" -A 3 | grep -oE "watch\?[^\"]+" | sed '1!G;h;$!d')
@@ -37,7 +37,7 @@ function getABroFrom {
 }
 
 function gimmeDatThumbnail {
-  echo "\033[0m\033[36m[OTLTA][""$currentLevel""/""$deeperLevel""] \033[35m<<< I save this one: $1\033[37m"
+  echo "\033[0m\033[36m[Get Thumbnail][""$currentLevel""/""$deeperLevel""] \033[35m<<< I save this one: $1\033[37m"
   videosHistory+=("$1")
   youtube-dl "$1" --skip-download --youtube-skip-dash-manifest --write-thumbnail -o "$download_location/""$prefix""_""$currentLevel"".%(ext)s"
   sips -Z "$maxSize" "$download_location/""$prefix""_""$currentLevel"".jpg"
@@ -49,7 +49,7 @@ function isFreshStuff {
   return 1
 }
 
-mkdir "$download_location/OTLTA_$prefix"
-download_location="$download_location/OTLTA_$prefix"
+mkdir "$download_location/GetThumbnail_$prefix"
+download_location="$download_location/GetThumbnail_$prefix"
 gimmeDatThumbnail "$1"
 getABroFrom "$1"
