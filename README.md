@@ -1,2 +1,2 @@
 # bro-tube
-Script for your Youtube videos
+💪 for your Youtube videos
