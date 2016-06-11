@@ -9,7 +9,7 @@ const srcPath   = path.join(__dirname, 'src');
 const buildPath = path.join(__dirname, 'build');
 const prod      = (process.env.NODE_ENV === 'production');
 
-const basePath  = '/';
+const basePath  = prod ? './' : '/';
 
 module.exports = {
   entry: [
@@ -35,17 +35,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'bro-stache!./src/index.bro',
+      template: './src/index.html',
       env: (prod) ? 'production' : 'development'
     })
   ],
   module: {
     loaders: [
-      {
-        test: /\.bro?$/,
-        exclude: ['/node_modules/'],
-        loader: 'bro-stache'
-      },
       {
         test: /\.json?$/,
         exclude: ['/node_modules/'],
@@ -53,8 +48,8 @@ module.exports = {
       },
       {
           test: /\.styl?$/,
-          exclude: /node_modules/,
-          loader: (prod) ? ExtractTextPlugin.extract('style', 'css!postcss!stylus') : 'style!css!postcss!stylus'
+          exclude: ['/node_modules/'],
+          loader: (prod) ? ExtractTextPlugin.extract('style', 'css?-url!stylus') : 'style!css?-url!postcss!stylus'
       },
       {
         test: /\.js?$/,
