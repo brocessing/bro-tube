@@ -1,6 +1,6 @@
 import Brotube from 'libs/Brotube';
-import loadYoutubeAPI from 'libs/loadYoutubeAPI';
-import matchYoutubeID from 'libs/matchYoutubeID';
+import loadYoutubeAPI from 'utils/loadYoutubeAPI';
+import matchYoutubeID from 'utils/matchYoutubeID';
 
 const dom = {
   players: document.getElementById('view-players'),
@@ -12,9 +12,11 @@ const dom = {
 }
 
 const brotubes = [];
-dom.player_containers.forEach((el) => brotubes.push(new Brotube(el)));
+
 
 function setupBrotubes(id) {
+  if(brotubes.length > 0) brotubes.forEach((brotube) => brotube.destroy());
+  dom.player_containers.forEach((el) => brotubes.push(new Brotube(el)));
   brotubes.forEach((brotube) => brotube.start(id));
   dom.players.classList.remove('players--hidden');
 }
