@@ -5,19 +5,20 @@ const API_DELAY = 2000;
 const VIDEO_DELAY = 5000;
 const API_KEY = 'AIzaSyBq-VK1pc7p8GiHSPiTrbfNp8_jWVz5sjc';
 const API_URL = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
-              + '&maxResults=25&type=video&key=' + API_KEY + '&relatedToVideoId=';
+              + '&maxResults=5&type=video&key=' + API_KEY + '&relatedToVideoId=';
 const MIDDLE_TIME = 30;
 
 class Brotube {
   constructor(domEl) {
     // setup DOM
-    let container = document.createElement('div');
     let iframe = document.createElement('div');
     let iframe2 = document.createElement('div');
-    container.classList.add('player-container');
-    container.appendChild(iframe2);
-    container.appendChild(iframe);
-    domEl.appendChild(container);
+    this.containerNode = document.createElement('div');
+    this.containerNode.classList.add('player-container');
+    this.containerNode.appendChild(iframe2);
+    this.containerNode.appendChild(iframe);
+    this.parentNode = domEl;
+    this.parentNode.appendChild(this.containerNode);
     this.players = [
       {
         id: 0,
@@ -95,6 +96,7 @@ class Brotube {
     clearTimeout(this._videoTimer);
     this.players[0].iframe.destroy();
     this.players[1].iframe.destroy();
+    this.parentNode.removeChild(this.containerNode);
   }
   onStateChange(player, state) {
     switch(state){

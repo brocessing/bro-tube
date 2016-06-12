@@ -15,8 +15,15 @@ const brotubes = [];
 
 
 function setupBrotubes(id) {
-  if(brotubes.length > 0) brotubes.forEach((brotube) => brotube.destroy());
-  dom.player_containers.forEach((el) => brotubes.push(new Brotube(el)));
+
+  if(brotubes.length > 0){
+     dom.player_containers.forEach((el, i) => {
+       brotubes[i].destroy()
+       brotubes[i] = new Brotube(el);
+     });
+  } else {
+    dom.player_containers.forEach((el) => brotubes.push(new Brotube(el)));
+  }
   brotubes.forEach((brotube) => brotube.start(id));
   dom.players.classList.remove('players--hidden');
 }
