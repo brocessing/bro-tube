@@ -1,7 +1,15 @@
+*:focus
+  outline none
+
 body
   background colors_background
-  padding 50px
+  padding 60px
+  +media(mobile)
+    padding 20px 10px
 
 .app
   font_main()
   font_antialiased()
+  width 100%
+  max-width 1000px
+  margin 0 auto
