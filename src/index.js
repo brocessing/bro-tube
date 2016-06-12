@@ -12,7 +12,7 @@ const dom = {
 }
 
 const brotubes = [];
-
+const API_KEY = 'AIzaSyBq-VK1pc7p8GiHSPiTrbfNp8_jWVz5sjc';
 
 function setupBrotubes(id) {
 
@@ -30,11 +30,15 @@ function setupBrotubes(id) {
 
 dom.input_form.addEventListener('submit', (e) => {
   e.preventDefault();
-  let id = matchYoutubeID(dom.input_input.value);
-  if (id) {
+  const search_url = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
+                + '&maxResults=5&type=video&q=' + encodeURIComponent(dom.input_input.value) + '&key=' + API_KEY;
+  get(search_url).exec((err, data) => {
+    if(err) return;
+    let randomIndex = Math.floor((Math.random() * data.items.length));
+    let queryUrl = data.items[randomIndex].id.videoId;
     dom.input_input.blur();
-    setupBrotubes(id);
-  }
+    setupBrotubes(queryUrl);
+  });
 });
 
 loadYoutubeAPI().then(() => {
