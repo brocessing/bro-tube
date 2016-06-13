@@ -1,6 +1,7 @@
 import Brotube from 'libs/Brotube';
 import loadYoutubeAPI from 'utils/loadYoutubeAPI';
 import matchYoutubeID from 'utils/matchYoutubeID';
+import { get } from 'utils/Request';
 
 const dom = {
   players: document.getElementById('view-players'),
