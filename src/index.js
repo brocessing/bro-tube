@@ -18,13 +18,16 @@ const API_KEY = 'AIzaSyBq-VK1pc7p8GiHSPiTrbfNp8_jWVz5sjc';
 function setupBrotubes(id) {
 
   if(brotubes.length > 0){
-     dom.player_containers.forEach((el, i) => {
-       brotubes[i].destroy()
-       brotubes[i] = new Brotube(el);
-     });
+    for (let i = 0, len = dom.player_containers.length; i < len; i++) {
+      brotubes[i].destroy()
+      brotubes[i] = new Brotube(dom.player_containers[i]);
+    }
   } else {
-    dom.player_containers.forEach((el) => brotubes.push(new Brotube(el)));
+    for (let i = 0, len = dom.player_containers.length; i < len; i++) {
+      brotubes.push(new Brotube(dom.player_containers[i]));
+    }
   }
+
   brotubes.forEach((brotube) => brotube.start(id));
   dom.players.classList.remove('players--hidden');
 }
