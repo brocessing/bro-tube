@@ -5,7 +5,7 @@ const API_DELAY = 2000;
 const VIDEO_DELAY = 5000;
 const API_KEY = 'AIzaSyBq-VK1pc7p8GiHSPiTrbfNp8_jWVz5sjc';
 const API_URL = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
-              + '&maxResults=5&type=video&key=' + API_KEY + '&relatedToVideoId=';
+              + '&maxResults=5&type=video&videoEmbeddable=true&videoSyndicated=true&key=' + API_KEY + '&relatedToVideoId=';
 const MIDDLE_TIME = 30;
 
 class Brotube {
