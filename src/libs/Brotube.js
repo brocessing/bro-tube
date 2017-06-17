@@ -147,17 +147,28 @@ class Brotube {
     get(API_URL+this.queue[this.queue.length - 1]).exec((err, data) => {
       if (err) { throw new Error('Error trying to fetch new videos'); return; }
       let ids = [];
+      // store videos titles too
+      let titles = [];
       // get all ids which are not already in the queue/history
       data.items.map((el) => {
         if (el.id.kind === 'youtube#video' && !this.queue.includes(el.id.videoId)) {
           ids.push(el.id.videoId);
+      // adding titles in an array
+          titles.push(el.snippet.title);
         }
       });
       if (ids.length <= 0) { throw new Error('No new related video found :('); return; }
       // Randomly choose one videoId
-      this.queue.push(ids[Math.floor(Math.random() * ids.length)]); // random id
+      const randIndex = Math.floor(Math.random() * ids.length);
+      this.queue.push(ids[randIndex]); // random id
       this.prepareNext();
       this._apiTimer = setTimeout(this.fetchNewVideo, API_DELAY);
+      // Put titles below players
+      const list1 = document.querySelector('.video1');
+      const newItem = document.createElement('li');
+      newItem.textContent = titles[randIndex]; 
+      list1.appendChild(newItem);
+
     });
   }
   makeNewPlayer(el) {

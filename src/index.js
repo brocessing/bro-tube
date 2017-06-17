@@ -35,7 +35,7 @@ function setupBrotubes(id) {
 dom.input_form.addEventListener('submit', (e) => {
   e.preventDefault();
   const search_url = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
-                + '&maxResults=5&type=video&q=' + encodeURIComponent(dom.input_input.value) + '&key=' + API_KEY;
+                + '&maxResults=5&type=video&videoEmbeddable=true&q=' + encodeURIComponent(dom.input_input.value) + '&key=' + API_KEY;
   get(search_url).exec((err, data) => {
     if(err) return;
     let randomIndex = Math.floor((Math.random() * data.items.length));
