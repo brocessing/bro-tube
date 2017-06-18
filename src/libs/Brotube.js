@@ -8,9 +8,16 @@ const API_URL = 'https://www.googleapis.com/youtube/v3/search?part=snippet'
               + '&maxResults=5&type=video&videoEmbeddable=true&videoSyndicated=true&key=' + API_KEY + '&relatedToVideoId=';
 const MIDDLE_TIME = 30;
 
+const titles = document.getElementById('titles');
+
 class Brotube {
   constructor(domEl) {
     // setup DOM
+    // creates ul for displaying titles
+    this.historyList = document.createElement('ul');
+    this.historyList.classList.add('title');
+    titles.appendChild(this.historyList);
+    
     let iframe = document.createElement('div');
     let iframe2 = document.createElement('div');
     this.containerNode = document.createElement('div');
@@ -46,6 +53,7 @@ class Brotube {
     this.fetchNewVideo = this.fetchNewVideo.bind(this);
     this.nextVideo = this.nextVideo.bind(this);
     this.addListeners();
+    this.clearHistory();
   }
   addListeners() {
     for (let i = 0, len = this.players.length; i<len; i++) {
@@ -164,11 +172,9 @@ class Brotube {
       this.prepareNext();
       this._apiTimer = setTimeout(this.fetchNewVideo, API_DELAY);
       // Put titles below players
-      const list1 = document.querySelector('.video1');
       const newItem = document.createElement('li');
       newItem.textContent = titles[randIndex]; 
-      list1.appendChild(newItem);
-
+      this.historyList.appendChild(newItem);
     });
   }
   makeNewPlayer(el) {
@@ -178,6 +184,17 @@ class Brotube {
     container.appendChild(iframe);
     el.appendChild(container);
     return iframe;
+  }
+
+  clearHistory() {
+    let prevTitles = document.getElementsByTagName("li");
+    let prevContainer = document.getElementsByTagName("ul");
+    let i;
+    if(prevContainer.length > 0) {
+       for(i=0; i < prevTitles.length; i++ ) {
+        prevTitles[i].style.display = "none";
+      }
+    }
   }
 }
 

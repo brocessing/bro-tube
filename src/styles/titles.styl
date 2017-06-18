@@ -1,10 +1,22 @@
-.titles
+#titles
   position relative
   display block
  
+.titles--hidden
+	display none
 
 .title
+  font_input()
+  font-size 12px
+  +media(mobile)
+    font-size 10px
+  font-weight 400
   float left
   height 100px
   width 50%
   box-sizing border-box
+ 
+
+.title li 
+	margin 10px 0 10px 0
+  
