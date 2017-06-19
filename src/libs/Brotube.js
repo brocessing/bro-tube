@@ -153,8 +153,8 @@ class Brotube {
   log(videoData) {
     if (!this.historyList) return;
     const newItem = document.createElement('li');
-    newItem.textContent = videoData.title; 
-    this.historyList.appendChild(newItem);
+    newItem.textContent = videoData.title;
+    this.historyList.insertBefore(newItem, this.historyList.firstChild);
   }
   displayPlayer() {
     this.getCurrentPlayer().iframe.el.style.display = 'block';
