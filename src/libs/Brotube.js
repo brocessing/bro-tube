@@ -53,7 +53,6 @@ class Brotube {
     this.fetchNewVideo = this.fetchNewVideo.bind(this);
     this.nextVideo = this.nextVideo.bind(this);
     this.addListeners();
-    this.clearHistory();
   }
   addListeners() {
     for (let i = 0, len = this.players.length; i<len; i++) {
@@ -105,6 +104,8 @@ class Brotube {
     this.players[0].iframe.destroy();
     this.players[1].iframe.destroy();
     this.parentNode.removeChild(this.containerNode);
+    titles.removeChild(this.historyList);
+    this.historyList = null;
   }
   onStateChange(player, state) {
     switch(state){
@@ -130,6 +131,8 @@ class Brotube {
   }
   onReady(player) {
     player.iframe.play();
+    !this.already && this.log(player.iframe.player.getVideoData());
+    this.already = true;
     player.seeked = false;
   }
   nextVideo() {
@@ -142,9 +145,16 @@ class Brotube {
     this.current++;
     this.switchPlayer();
     this.getCurrentPlayer().iframe.play();
+    this.log(this.getCurrentPlayer().iframe.player.getVideoData());
     this.displayPlayer();
     this.prepareNext();
     this._videoTimer = setTimeout(this.nextVideo, VIDEO_DELAY);
+  }
+  log(videoData) {
+    if (!this.historyList) return;
+    const newItem = document.createElement('li');
+    newItem.textContent = videoData.title; 
+    this.historyList.appendChild(newItem);
   }
   displayPlayer() {
     this.getCurrentPlayer().iframe.el.style.display = 'block';
@@ -156,13 +166,10 @@ class Brotube {
       if (err) { throw new Error('Error trying to fetch new videos'); return; }
       let ids = [];
       // store videos titles too
-      let titles = [];
       // get all ids which are not already in the queue/history
       data.items.map((el) => {
         if (el.id.kind === 'youtube#video' && !this.queue.includes(el.id.videoId)) {
           ids.push(el.id.videoId);
-      // adding titles in an array
-          titles.push(el.snippet.title);
         }
       });
       if (ids.length <= 0) { throw new Error('No new related video found :('); return; }
@@ -172,9 +179,7 @@ class Brotube {
       this.prepareNext();
       this._apiTimer = setTimeout(this.fetchNewVideo, API_DELAY);
       // Put titles below players
-      const newItem = document.createElement('li');
-      newItem.textContent = titles[randIndex]; 
-      this.historyList.appendChild(newItem);
+
     });
   }
   makeNewPlayer(el) {
@@ -184,17 +189,6 @@ class Brotube {
     container.appendChild(iframe);
     el.appendChild(container);
     return iframe;
-  }
-
-  clearHistory() {
-    let prevTitles = document.getElementsByTagName("li");
-    let prevContainer = document.getElementsByTagName("ul");
-    let i;
-    if(prevContainer.length > 0) {
-       for(i=0; i < prevTitles.length; i++ ) {
-        prevTitles[i].style.display = "none";
-      }
-    }
   }
 }
 
